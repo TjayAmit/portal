@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zcmc_portal/core/widgets/app_drawer.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -7,10 +8,11 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dashboard"),
+        title: Text("Portal"),
       ),
+      drawer: const AppDrawer(),
       body: Center(
-        child: Text("Dashboard"),
+        child: Text("Portal"),
       ),
     );
   }
