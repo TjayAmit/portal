@@ -2,6 +2,7 @@
 class DTRModel {
   final int id;
   final int biometricId;
+  final String? date;
   final String? timeIn;
   final String? breakOut;
   final String? breakIn;
@@ -11,6 +12,7 @@ class DTRModel {
   DTRModel({
     required this.id,
     required this.biometricId,
+    required this.date,
     required this.timeIn,
     required this.breakOut,
     required this.breakIn,
@@ -22,11 +24,12 @@ class DTRModel {
     return DTRModel(
       id: json['id'],
       biometricId: json['biometric_id'],
-      timeIn: json['first_in'],
-      breakOut: json['first_out'],
-      breakIn: json['second_in'],
-      timeOut: json['second_out'],
-      overTime: json['overtime'],
+      date: json['date'],
+      timeIn: json['time_in'],
+      breakOut: json['break_out'],
+      breakIn: json['break_in'],
+      timeOut: json['time_out'],
+      overTime: json['over_time'],
     );
   }
 
@@ -34,6 +37,7 @@ class DTRModel {
     return {
       'id': id,
       'biometric_id': biometricId,
+      'date': date,
       'time_in': timeIn,
       'break_out': breakOut,
       'break_in': breakIn,

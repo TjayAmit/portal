@@ -100,16 +100,16 @@ class _DTRPageState extends ConsumerState<DTRPage> {
       child: ListTile(
         leading: const Icon(Icons.access_time, color: Colors.blue),
         title: Text(
-          'Biometric ID: ${dtr.biometricId}',
+          'Date: ${dtr.date}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Time In: ${dtr.timeIn}'),
-            Text('Time Out: ${dtr.timeOut}'),
             Text('Break Out: ${dtr.breakOut}'),
             Text('Break In: ${dtr.breakIn}'),
+            Text('Time Out: ${dtr.timeOut}'),
             Text('Over Time: ${dtr.overTime}'),
           ],
         ),

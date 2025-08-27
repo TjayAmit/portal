@@ -26,8 +26,8 @@ class DTRService{
 
       final responseData = json.decode(response.body);
       
-      if(responseData != null){
-        final dtrData = responseData;
+      if(responseData['data'] != null){
+        final dtrData = responseData['data'];
         return List<DTRModel>.from(dtrData.map((x) => DTRModel.fromJson(x)));
       }
     }catch(e){
