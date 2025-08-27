@@ -1,0 +1,64 @@
+import 'dart:convert';
+import 'package:zcmc_portal/core/constants/api_constants.dart';
+import 'package:zcmc_portal/src/authentication/model/user_model.dart';
+import 'package:http/http.dart' as http;
+
+class AuthService{
+  final http.Client client;
+
+  AuthService({http.Client? client}) : client = client ?? http.Client();
+
+  Future<UserModel?> login(String username, String password) async {
+    try{
+      final response = await client.post(
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.loginEndpoint),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: json.encode({'username': username, 'password': password}),
+      ).timeout(const Duration(seconds: 30));
+
+      if(response.statusCode == 200){
+        final responseData = json.decode(response.body);
+        
+        if(responseData['data'] != null){
+          return UserModel.fromJson(responseData['data']);
+        }
+      }else if(response.statusCode == 401){
+        throw Exception('Invalid email or password');
+      }else if(response.statusCode == 400){
+        final errorData = json.decode(response.body);
+        throw Exception(errorData['message'] ?? 'Bad request');
+      }else{
+        throw Exception('Server error: ${response.statusCode}');
+      }
+    } on http.ClientException catch (e) {
+      throw Exception('Network error: ${e.message}');
+    } on FormatException catch (e) {
+      throw Exception('Invalid response format from server: ${e.message}');
+    } catch (e) {
+      throw Exception('Login failed: ${e.toString()}');
+    }
+
+    return null;
+  }
+
+  Future<void> logout() async{
+    try{
+      final response = await client.post(
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.logoutEndpoint),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 30));
+
+      if(response.statusCode != 200){
+        throw Exception('Logout failed: ${response.statusCode}');
+      }
+    }catch(e){
+      throw Exception('Logout failed: ${e.toString()}');
+    }
+  }
+}
