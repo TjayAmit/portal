@@ -11,8 +11,14 @@ class DashboardPage extends StatelessWidget {
         title: Text("Portal"),
       ),
       drawer: const AppDrawer(),
-      body: Center(
-        child: Text("Portal"),
+      body: Column(
+        children: [
+          Text("Dashboard"),
+          ElevatedButton(
+            onPressed: () => Navigator.pushNamed(context, '/daily-time-record'),
+            child: Text("Daily Time Record"),
+          ),
+        ],
       ),
     );
   }
