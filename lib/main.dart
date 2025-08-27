@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zcmc_portal/core/theme/app_theme.dart'; 
+
+import 'package:zcmc_portal/src/dashboard/view/dashboard_page.dart';
 import 'package:zcmc_portal/src/authentication/view/login.dart';
-import 'package:zcmc_portal/core/theme/app_theme.dart';
 
 void main() {
   runApp(
@@ -22,7 +24,10 @@ class MyApp extends ConsumerWidget {
       title: 'ZCMC Portal',
       debugShowCheckedModeBanner: false,  
       theme: appTheme,
-      home: const Login(),
+      home: const LoginPage(),
+      routes: {
+        '/dashboard': (context) => const DashboardPage(),
+      },
     );
   }
 }
