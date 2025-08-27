@@ -12,6 +12,7 @@ class AuthController{
     try {
       final user = await ref.read(authServiceProvider).login(username, password);
 
+
       if(user == null){
         ref.read(authStateProvider.notifier).state = AuthState.unauthenticated();
         return;

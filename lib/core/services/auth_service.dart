@@ -8,7 +8,7 @@ class AuthService{
 
   AuthService({http.Client? client}) : client = client ?? http.Client();
 
-  Future<UserModel?> login(String username, String password) async {
+  Future<UserModel?> login(String employeeId, String password) async {
     try{
       final response = await client.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.loginEndpoint),
@@ -16,14 +16,15 @@ class AuthService{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: json.encode({'username': username, 'password': password}),
+        body: json.encode({'employee_id': employeeId, 'password': password}),
       ).timeout(const Duration(seconds: 30));
 
       if(response.statusCode == 200){
         final responseData = json.decode(response.body);
         
         if(responseData['data'] != null){
-          return UserModel.fromJson(responseData['data']);
+          final userData = responseData['data'];
+          return UserModel.fromJson(userData);
         }
       }else if(response.statusCode == 401){
         throw Exception('Invalid email or password');

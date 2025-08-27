@@ -11,27 +11,35 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final _usernameController = TextEditingController();
+  final _employeeIdController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
+  bool _hasSetUpListener = false;
 
   @override
-  void initState() {
-    super.initState();
-    // Listen for authentication state changes
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  Widget build(BuildContext context) {
+    final authState = ref.watch(authStateProvider);
+    
+    // ✅ CORRECT: Set up listener during build phase
+    if (!_hasSetUpListener) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _hasSetUpListener = true;
+          });
+        }
+      });
+    }
+
+    if(_hasSetUpListener){
       ref.listen<AuthState>(authStateProvider, (previous, next) {
         if (next is AuthStateAuthenticated && mounted) {
           Navigator.of(context).pushReplacementNamed('/dashboard');
         }
       });
-    });
-  }
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -70,10 +78,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: Column(
                         children: [
                           TextFormField(
-                            controller: _usernameController,
+                            controller: _employeeIdController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: "Username",
+                              labelText: "Employee ID",
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -171,19 +179,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final username = _usernameController.text;
+      final username = _employeeIdController.text;
       final password = _passwordController.text;
 
       final authController = ref.read(authControllerProvider);
       await authController.login(username, password);
-      
-      // Navigation is now handled by the listener in initState
     }
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _employeeIdController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
