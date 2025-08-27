@@ -30,7 +30,7 @@ class Login extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                 child: Column(
                   children: [
                     TextField(
@@ -39,16 +39,29 @@ class Login extends StatelessWidget {
                         labelText: "Username",
                       ),
                     ),
+                    const SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Password",
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text("Login"),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text("Forgot Password?", style: TextStyle(color: Colors.blue),),
+                      ],
                     ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        color: Colors.blue,
+                        onPressed: () {},
+                        child: Text("Login", style: TextStyle(color: Colors.white),),
+                      ),
+                    )
                   ],
                 ),
               ),
