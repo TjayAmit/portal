@@ -22,7 +22,7 @@ class DetailDefaultCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),),
-                Text(placeholder ?? '', style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),),
+                placeholder != null ? Text(placeholder ?? '', style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),) : const SizedBox(),
                 Text(value, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
             ],),
           ),

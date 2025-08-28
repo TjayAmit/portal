@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zcmc_portal/core/constants/personal_information.constant.dart';
+import 'package:zcmc_portal/core/utils/date_time.dart';
 import 'package:zcmc_portal/core/widgets/cards/detail_default_card.dart';
 import 'package:zcmc_portal/src/authentication/model/contact_model.dart';
 import 'package:zcmc_portal/src/authentication/model/designation_model.dart';
@@ -16,7 +17,8 @@ class PersonalInformationPage extends ConsumerWidget{
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('Personal Information'),
+        backgroundColor: Colors.green,
+        title: Text('Personal Data Sheet', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -33,7 +35,7 @@ class PersonalInformationPage extends ConsumerWidget{
     );
   }
 
-  Widget Card({required Widget child, required String title}){
+  Widget Card({required Widget child, required String title, required IconData icon}){
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -54,7 +56,8 @@ class PersonalInformationPage extends ConsumerWidget{
           children: [
             Row(
               children: [
-                Icon(Icons.person, size: 24),
+                Icon(icon, size: 20),
+                const SizedBox(width: 10),
                 Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
               ],
             ),
@@ -67,67 +70,90 @@ class PersonalInformationPage extends ConsumerWidget{
   }
 
   Widget _personalInformation(PersonalInformationModel? personalInformation) {
+    List<Map<String, dynamic>> personalInformationList = [
+      {
+        'title': PersonalInformationConstant.fullName,
+        'placeholder': PlaceholderValueConstant.fullName,
+        'value': personalInformation?.name ?? '',
+      },
+      {
+        'title': PersonalInformationConstant.nameExtension,
+        'placeholder': PlaceholderValueConstant.nameExtension,
+        'value': personalInformation?.suffix ?? '-',
+      },
+      {
+        'title': PersonalInformationConstant.sex,
+        'placeholder': null,
+        'value': personalInformation?.sex ?? '-',
+      },
+      {
+        'title': PersonalInformationConstant.birthDate,
+        'placeholder': PlaceholderValueConstant.birthDate,
+        'value': convertDateToName(personalInformation?.birthDate.toString() ?? '-'),
+      },
+      {
+        'title': PersonalInformationConstant.placeOfBirth,
+        'placeholder': null,
+        'value': personalInformation?.placeOfBirth ?? '-',
+      },
+      {
+        'title': PersonalInformationConstant.civilStatus,
+        'placeholder': null,
+        'value': personalInformation?.civilStatus ?? '-',
+      },
+    ];
+
     return Card(
       title: 'Personal Information',
+      icon: Icons.person,
       child: 
             SizedBox(
               width: double.infinity,
               child: Column(
-                children: [
-                  DetailDefaultCard(
-                    title: PersonalInformationConstant.fullName,
-                    placeholder: PlaceholderValueConstant.fullName,
-                    value: personalInformation?.name ?? '',
-                  ),
-                  const SizedBox(height: 10),
-                  DetailDefaultCard(
-                    title: PersonalInformationConstant.nameExtension,
-                    placeholder: PlaceholderValueConstant.nameExtension,
-                    value: personalInformation?.suffix ?? '-',
-                  ),
-                  const SizedBox(height: 10),
-                  DetailDefaultCard(
-                    title: PersonalInformationConstant.sex,
-                    placeholder: null,
-                    value: personalInformation?.sex ?? '-',
-                  ),
-                  const SizedBox(height: 10),
-                  DetailDefaultCard(
-                    title: PersonalInformationConstant.birthDate,
-                    placeholder: null,
-                    value: personalInformation?.birthDate.toString() ?? '-',
-                  ),
-                  const SizedBox(height: 10),
-                  DetailDefaultCard(
-                    title: PersonalInformationConstant.placeOfBirth,
-                    placeholder: null,
-                    value: personalInformation?.placeOfBirth ?? '-',
-                  ),
-                  const SizedBox(height: 10),
-                  DetailDefaultCard(
-                    title: PersonalInformationConstant.civilStatus,
-                    placeholder: null,
-                    value: personalInformation?.civilStatus ?? '-',
-                  ),
-                ],
+                children: personalInformationList.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom:12.0),
+                    child: DetailDefaultCard(
+                      title: item['title']!,
+                      placeholder: item['placeholder'],
+                      value: item['value']!,
+                    ),
+                  );
+                }).toList(),
               ),
             )
     );
   }
 
   Widget _contact(ContactModel? contact){
-    return Card(title: 'Contact', child: SizedBox(child: Column(children: [
-      DetailDefaultCard(title: 'Email', placeholder: null, value: contact?.email ?? '-'),
-      const SizedBox(height: 10),
-      DetailDefaultCard(title: 'Phone Number', placeholder: null, value: contact?.phoneNumber ?? '-'),
-    ],),));
+    return Card(
+      title: 'Contact',
+      icon: Icons.phone,
+      child: SizedBox(
+        child: Column(
+          children: [
+            DetailDefaultCard(title: 'Email', placeholder: null, value: contact?.email ?? '-'),
+            const SizedBox(height: 10),
+            DetailDefaultCard(title: 'Phone Number', placeholder: null, value: contact?.phoneNumber ?? '-'),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _designation(DesignationModel? designation){
-    return Card(title: 'Designation', child: SizedBox(child: Column(children: [
-      DetailDefaultCard(title: 'Job Position', placeholder: null, value: designation?.jobPosition.name ?? '-'),
-      const SizedBox(height: 10),
-      DetailDefaultCard(title: 'Area Assign', placeholder: null, value: designation?.area.name ?? '-'),
-    ],),));
+    return Card(
+      title: 'Designation',
+      icon: Icons.work,
+      child: SizedBox(
+        child: Column(
+          children: [
+            DetailDefaultCard(title: 'Job Position', placeholder: null, value: designation?.jobPosition.name ?? '-'),
+            const SizedBox(height: 10),
+            DetailDefaultCard(title: 'Area Assign', placeholder: null, value: designation?.area.name ?? '-'),
+          ],
+        ),
+      ),
+    );
   }
 } 
