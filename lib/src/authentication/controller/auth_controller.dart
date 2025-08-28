@@ -28,7 +28,7 @@ class AuthController{
   Future<void> logout() async {
     ref.read(authStateProvider.notifier).state = AuthState.loading();
     try {
-      await ref.read(authServiceProvider).logout();
+      await ref.read(authServiceProvider).logout(ref.read(userProvider)!.token!);
       ref.read(authStateProvider.notifier).state = AuthState.unauthenticated();
       ref.read(userProvider.notifier).state = null;
     } catch (e) {

@@ -48,13 +48,14 @@ class AuthService{
     return null;
   }
 
-  Future<void> logout() async{
+  Future<void> logout(String token) async{
     try{
       final response = await client.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.logoutEndpoint),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
         },
       ).timeout(const Duration(seconds: 30));
 

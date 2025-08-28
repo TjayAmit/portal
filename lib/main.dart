@@ -28,6 +28,7 @@ class MyApp extends ConsumerWidget {
       theme: appTheme,
       home: const LoginPage(),
       routes: {
+        '/login': (context) => const LoginPage(),
         '/dashboard': (context) => const DashboardPage(),
         '/daily-time-record': (context) => const DTRPage(),
         '/personal-information': (context) => const PersonalInformationPage(),
