@@ -14,10 +14,6 @@ class DashboardPage extends StatelessWidget {
       body: Column(
         children: [
           Text("Dashboard"),
-          ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/daily-time-record'),
-            child: Text("Daily Time Record"),
-          ),
         ],
       ),
     );

@@ -47,8 +47,8 @@ class AppDrawer extends ConsumerWidget {
                 _buildDrawerItem(
                   context,
                   icon: Icons.history,
-                  title: 'Login History',
-                  onTap: () => _navigateTo(context, '/login-history'),
+                  title: 'Daily Time Record',
+                  onTap: () => _navigateTo(context, '/daily-time-record'),
                 ),
                 _buildDrawerItem(
                   context,

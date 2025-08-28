@@ -12,7 +12,7 @@ class DTRController {
   Future<void> getDTR() async {
     ref.read(dtrStateProvider.notifier).state = DTRState.loading();
     try {
-      final dtr = await ref.read(dtrServiceProvider).getDTR(ref.read(userProvider)!.token);
+      final dtr = await ref.read(dtrServiceProvider).getDTR(ref.read(userProvider)!.token!);
       ref.read(dtrStateProvider.notifier).state = DTRState.success(dtr);
       ref.read(dtrListProvider.notifier).state = dtr;
     } catch (e) {

@@ -24,7 +24,10 @@ class AuthService{
         
         if(responseData['data'] != null){
           final userData = responseData['data'];
-          return UserModel.fromJson(userData);
+          final user = UserModel.fromJson(userData);
+          user.setToken(responseData['token']);
+
+          return user;
         }
       }else if(response.statusCode == 401){
         throw Exception('Invalid email or password');
