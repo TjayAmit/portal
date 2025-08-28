@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zcmc_portal/core/widgets/app_drawer.dart';
 import 'package:zcmc_portal/src/daily_time_record/controller/dtr_state.dart';
 import 'package:zcmc_portal/src/daily_time_record/model/dtr_model.dart';
 import 'package:zcmc_portal/src/daily_time_record/providers/dtr_provider.dart';
@@ -37,7 +36,6 @@ class _DTRPageState extends ConsumerState<DTRPage> {
           ),
         ],
       ),
-      drawer: const AppDrawer(),
       body: _buildBody(dtrState, dtrList),
     );
   }

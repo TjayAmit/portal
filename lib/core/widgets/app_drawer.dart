@@ -53,8 +53,8 @@ class AppDrawer extends ConsumerWidget {
                 _buildDrawerItem(
                   context,
                   icon: Icons.receipt,
-                  title: 'Transactions',
-                  onTap: () => _navigateTo(context, '/transactions'),
+                  title: 'Schedule',
+                  onTap: () => _navigateTo(context, '/schedule'),
                 ),
                 const Divider(),
                 _buildDrawerItem(
