@@ -5,6 +5,7 @@ import 'package:zcmc_portal/src/daily_time_record/view/dtr_list.dart';
 
 import 'package:zcmc_portal/src/dashboard/view/dashboard_page.dart';
 import 'package:zcmc_portal/src/authentication/view/login.dart';
+import 'package:zcmc_portal/src/personal_information/personal_information.dart';
 
 void main() {
   runApp(
@@ -29,6 +30,7 @@ class MyApp extends ConsumerWidget {
       routes: {
         '/dashboard': (context) => const DashboardPage(),
         '/daily-time-record': (context) => const DTRPage(),
+        '/personal-information': (context) => const PersonalInformationPage(),
       },
     );
   }

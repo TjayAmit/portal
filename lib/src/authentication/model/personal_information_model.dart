@@ -64,4 +64,6 @@ class PersonalInformationModel {
       'citizenship': citizenship,
     };
   }
+
+  String get name => '$lastName, $firstName $middleName';
 }
