@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 class ScheduleModel {
   final int id;
   final String date;
