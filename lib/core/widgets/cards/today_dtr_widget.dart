@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zcmc_portal/core/utils/date_time.dart';
 
 class TodayDTRWidget extends StatelessWidget {
   const TodayDTRWidget({Key? key}) : super(key: key);
@@ -9,38 +8,59 @@ class TodayDTRWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300, width: 1),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Row(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: 5),
+            child: Row(
               children: [ 
-              Text("Today's Logs", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),  
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("TODAY LOGS", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),  
+                    Text("Check your daily time record.", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),),  
+                  ],
+                ),
               const Spacer(),
-              Column(
-                children: [
-                  Text(convertDateToDay(DateTime.now().toString()), style: TextStyle(decoration: TextDecoration.underline)),
-                  Text(convertDateToName(DateTime.now().toString())),
-                ],
-              )
+              MaterialButton(
+                color: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/attendance');
+                }, child: Row(
+                  children: [
+                    Icon(Icons.fingerprint, color: Colors.white),
+                    const SizedBox(width: 5),
+                    Text('Biometric', style: TextStyle(color: Colors.white),), 
+                  ],
+                ),
+              ),
             ]),
-            const Divider(thickness: 1),
-            Row(
-              children: [
-                _buildLog('Time-in', '08:00 AM'),
-                const Spacer(),
-                _buildLog('Break-out', '12:00 PM'),
-                const Spacer(),
-                _buildLog('Break-in', '12:05 PM'),
-                const Spacer(),
-                _buildLog('Time-out', '--:-- PM'),
-              ],
-            )
-          ],
-        ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.green
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  _buildLog('Time-in', '08:00 AM'),
+                  const Spacer(),
+                  _buildLog('Break-out', '12:00 PM'),
+                  const Spacer(),
+                  _buildLog('Break-in', '12:05 PM'),
+                  const Spacer(),
+                  _buildLog('Time-out', '--:-- PM'),
+                ],
+              ),
+            ),
+          )
+        ],
       ), 
     );
   }

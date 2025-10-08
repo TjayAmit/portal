@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zcmc_portal/core/utils/date_time.dart';
 import 'package:zcmc_portal/src/daily_time_record/controller/dtr_state.dart';
 import 'package:zcmc_portal/src/daily_time_record/model/dtr_model.dart';
 import 'package:zcmc_portal/src/daily_time_record/providers/dtr_provider.dart';
@@ -26,17 +27,55 @@ class _DTRPageState extends ConsumerState<DTRPage> {
     final dtrState = ref.watch(dtrStateProvider);
     final dtrList = ref.watch(dtrListProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Daily Time Record'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => ref.read(dtrControllerProvider).getDTR(),
+    return  Stack(
+      alignment: Alignment.topRight,
+      fit: StackFit.expand,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top:50.0),
+          child: SizedBox(
+            child: _buildBody(dtrState, dtrList),
           ),
-        ],
-      ),
-      body: _buildBody(dtrState, dtrList),
+        ),
+        Positioned(
+          top: 0,
+          child: SizedBox(
+            width: 400,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Daily Time Record'.toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold),),
+                SizedBox(
+                  child: Row(
+                    children: [
+                      Text('Month', style: TextStyle(fontWeight: FontWeight.bold),),
+                      const SizedBox(width: 10),
+                      DropdownButton<String>(
+                        value: 'October',
+                        onChanged: (String? value) {},
+                        items: const <DropdownMenuItem<String>>[
+                          DropdownMenuItem<String>(value: 'January', child: Text('January')),
+                          DropdownMenuItem<String>(value: 'February', child: Text('February')),
+                          DropdownMenuItem<String>(value: 'March', child: Text('March')),
+                          DropdownMenuItem<String>(value: 'April', child: Text('April')),
+                          DropdownMenuItem<String>(value: 'May', child: Text('May')),
+                          DropdownMenuItem<String>(value: 'June', child: Text('June')),
+                          DropdownMenuItem<String>(value: 'July', child: Text('July')),
+                          DropdownMenuItem<String>(value: 'August', child: Text('August')),
+                          DropdownMenuItem<String>(value: 'September', child: Text('September')),
+                          DropdownMenuItem<String>(value: 'October', child: Text('October')),
+                          DropdownMenuItem<String>(value: 'November', child: Text('November')),
+                          DropdownMenuItem<String>(value: 'December', child: Text('December')),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -93,22 +132,37 @@ class _DTRPageState extends ConsumerState<DTRPage> {
   }
 
   Widget _buildDTRCard(DTRModel dtr) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey[200]!,
+            width: 1,
+          ),
+        ),
+      ),
       child: ListTile(
-        leading: const Icon(Icons.access_time, color: Colors.blue),
         title: Text(
-          'Date: ${dtr.date}',
+          convertDateToName(dtr.date!),
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Time In: ${dtr.timeIn}'),
-            Text('Break Out: ${dtr.breakOut}'),
-            Text('Break In: ${dtr.breakIn}'),
-            Text('Time Out: ${dtr.timeOut}'),
-            Text('Over Time: ${dtr.overTime}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              Text('Time In: ${dtr.timeIn ?? 'N/A'}'),
+              Text('Break Out: ${dtr.breakOut ?? 'N/A'}'),
+            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              Text('Break In: ${dtr.breakIn ?? 'N/A'}'),
+              Text('Time Out: ${dtr.timeOut ?? 'N/A'}'),
+            ]),
+            Text('Over Time: ${dtr.overTime ?? 'N/A'}'),
           ],
         ),
         trailing: const Icon(Icons.chevron_right),
