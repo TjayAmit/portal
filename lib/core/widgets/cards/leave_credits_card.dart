@@ -31,17 +31,14 @@ class LeaveCreditsCard extends ConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header
           Row(
             children: [
-              Icon(
-                Icons.calendar_month_outlined,
-                color: theme.primaryColor,
-                size: 18,
-              ),
+              Icon(Icons.calendar_month_outlined, color: theme.primaryColor, size: 18),
               const SizedBox(width: 8),
               Text(
                 'My Leave Credits',
@@ -62,24 +59,30 @@ class LeaveCreditsCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 1.8,
-            children: leaveBalances.entries.map((entry) {
-              return _buildLeaveCard(
-                context: context,
-                type: entry.key,
-                days: entry.value,
-                color: _getLeaveTypeColor(entry.key),
-              );
-            }).toList(),
+          const SizedBox(height: 10),
+
+          // Horizontal Scrollable Row
+          SizedBox(
+            height: 85,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: leaveBalances.entries.map((entry) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: _buildLeaveCard(
+                      context: context,
+                      type: entry.key,
+                      days: entry.value,
+                      color: _getLeaveTypeColor(entry.key),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
           ),
-          const SizedBox(height: 4),
+
+          // View all
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
@@ -107,6 +110,7 @@ class LeaveCreditsCard extends ConsumerWidget {
     );
   }
 
+  // Leave card
   Widget _buildLeaveCard({
     required BuildContext context,
     required String type,
@@ -117,9 +121,10 @@ class LeaveCreditsCard extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
+      width: 140,
       decoration: BoxDecoration(
         color: color.withOpacity(isDark ? 0.12 : 0.06),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -142,8 +147,7 @@ class LeaveCreditsCard extends ConsumerWidget {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
@@ -159,7 +163,7 @@ class LeaveCreditsCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 4),
           Text(
             _formatLeaveType(type),
             style: theme.textTheme.labelMedium?.copyWith(
@@ -183,6 +187,7 @@ class LeaveCreditsCard extends ConsumerWidget {
     );
   }
 
+  // Helpers
   IconData _getLeaveIcon(String type) {
     switch (type.toLowerCase()) {
       case 'sick_leave':
@@ -192,7 +197,7 @@ class LeaveCreditsCard extends ConsumerWidget {
       case 'maternity_leave':
         return Icons.family_restroom_outlined;
       case 'paternity_leave':
-        return Icons.family_restroom_outlined;
+        return Icons.male_outlined;
       case 'special_leave':
         return Icons.star_outline_rounded;
       default:
