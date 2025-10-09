@@ -16,7 +16,6 @@ class ScheduleController {
       ref.read(scheduleStateProvider.notifier).state = ScheduleSuccess(schedule);
       ref.read(scheduleListProvider.notifier).state = schedule;
     } catch (e) {
-      print('Failed to fetch schedule: ${e.toString()}');
       ref.read(scheduleStateProvider.notifier).state = ScheduleError(e.toString());
     }
   }
