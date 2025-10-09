@@ -68,4 +68,32 @@ class RecoveryController extends StateNotifier<RecoveryState> {
     final regex = RegExp(r"^[^\s@]+@[^\s@]+\.[^\s@]+$");
     return regex.hasMatch(email);
   }
+
+  /// Verify OTP
+  Future<bool> verifyOtp(String otp) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+
+    await Future.delayed(const Duration(seconds: 2)); // simulate network delay
+
+    // Fake OTP check
+    if (otp == '123456') {
+      state = state.copyWith(isLoading: false, otpVerified: true);
+      return true;
+    } else {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Invalid or expired OTP code',
+      );
+      return false;
+    }
+  }
+
+  /// Resend OTP
+  Future<void> resendOtp() async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Fake resend success
+    state = state.copyWith(isLoading: false);
+  }
 }

@@ -109,6 +109,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       // Employee ID
                       TextFormField(
                         controller: _employeeIdController,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: "Employee ID",
                           prefixIcon:

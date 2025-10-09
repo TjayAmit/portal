@@ -1,24 +1,27 @@
-// lib/src/authentication/recovery_state.dart
 class RecoveryState {
   final bool isLoading;
-  final bool emailSent;
   final String? errorMessage;
+  final bool emailSent;
+  final bool otpVerified;
 
   const RecoveryState({
     this.isLoading = false,
-    this.emailSent = false,
     this.errorMessage,
+    this.emailSent = false,
+    this.otpVerified = false,
   });
 
   RecoveryState copyWith({
     bool? isLoading,
-    bool? emailSent,
     String? errorMessage,
+    bool? emailSent,
+    bool? otpVerified,
   }) {
     return RecoveryState(
       isLoading: isLoading ?? this.isLoading,
-      emailSent: emailSent ?? this.emailSent,
       errorMessage: errorMessage,
+      emailSent: emailSent ?? this.emailSent,
+      otpVerified: otpVerified ?? this.otpVerified,
     );
   }
 }
