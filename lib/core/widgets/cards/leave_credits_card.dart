@@ -83,28 +83,28 @@ class LeaveCreditsCard extends ConsumerWidget {
           ),
 
           // View all
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                // TODO: Navigate to leave application page
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: Text(
-                'View All →',
-                style: textTheme.labelSmall?.copyWith(
-                  color: theme.primaryColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 11,
-                  height: 1.1,
-                ),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: TextButton(
+          //     onPressed: () {
+          //       // TODO: Navigate to leave application page
+          //     },
+          //     style: TextButton.styleFrom(
+          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          //       minimumSize: Size.zero,
+          //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //     ),
+          //     child: Text(
+          //       'View All →',
+          //       style: textTheme.labelSmall?.copyWith(
+          //         color: theme.primaryColor,
+          //         fontWeight: FontWeight.w500,
+          //         fontSize: 11,
+          //         height: 1.1,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

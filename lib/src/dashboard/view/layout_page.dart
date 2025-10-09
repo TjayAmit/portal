@@ -48,25 +48,29 @@ class _LayoutPageState extends State<LayoutPage> {
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home, color: Colors.white),
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, size: 20),
             label: 'Home',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.calendar_today, color: Colors.white),
-            icon: Badge(label: Text('2'), child: Icon(Icons.calendar_today)),
+            icon: Icon(Icons.calendar_today, size: 20),
             label: 'MY DTR',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.document_scanner, color: Colors.white),
-            icon: Badge(label: Text('2'), child: Icon(Icons.document_scanner)),
+            icon: Icon(Icons.document_scanner, size: 20),
             label: 'Leave',
           ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.document_scanner, color: Colors.white),
+            icon: Icon(Icons.announcement), label: 'Announcement')
         ],
       ),
       body: [
         const DashboardPage(),
         const DTRPage(),
-        const LeaveApplication()
+        const LeaveApplication(),
+        const Text('Anouncements')
       ][currentPageIndex],
     );
   }
