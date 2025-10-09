@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:zcmc_portal/src/daily_time_record/view/dtr_list.dart';
 import 'package:zcmc_portal/src/dashboard/view/dashboard_page.dart';
 import 'package:zcmc_portal/src/leave_applications/view/leave_application.dart';
@@ -21,7 +22,7 @@ class _LayoutPageState extends State<LayoutPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("ZCMC PORTAL", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, fontFamily: 'Poppins'),),
+        title: Text("ZCMC PORTAL", style: GoogleFonts.pacifico(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(200, 0, 0, 0))),
         actions: [
           IconButton(
             onPressed: () => Navigator.pushNamed(context, '/personal-information'), 

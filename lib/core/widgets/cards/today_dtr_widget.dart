@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zcmc_portal/core/widgets/button/biometric.dart';
 
 class TodayDTRWidget extends StatelessWidget {
   const TodayDTRWidget({Key? key}) : super(key: key);
@@ -24,21 +25,7 @@ class TodayDTRWidget extends StatelessWidget {
                   ],
                 ),
               const Spacer(),
-              MaterialButton(
-                color: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/attendance');
-                }, child: Row(
-                  children: [
-                    Icon(Icons.fingerprint, color: Colors.white),
-                    const SizedBox(width: 5),
-                    Text('Biometric', style: TextStyle(color: Colors.white),), 
-                  ],
-                ),
-              ),
+              const Biometric()
             ]),
           ),
           Container(
