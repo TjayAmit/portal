@@ -164,7 +164,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () => Navigator.of(context).pushNamed('/recovery'),
                           child: const Text(
                             "Forgot Password?",
                             style: TextStyle(
