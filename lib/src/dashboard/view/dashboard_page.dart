@@ -7,13 +7,14 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        const TodayDTRWidget(),
-        const SizedBox(height: 20),
-        const LeaveCreditsCard(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          const TodayDTRWidget(),
+          const LeaveCreditsCard(),
+        ],
+      ),
     );
   }
 }
