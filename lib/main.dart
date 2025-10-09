@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zcmc_portal/core/theme/app_theme.dart';
 import 'package:zcmc_portal/src/attendance/view/attendance.dart';
@@ -10,7 +11,8 @@ import 'package:zcmc_portal/src/personal_information/personal_information.dart';
 import 'package:zcmc_portal/src/schedule/view/schedule.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();  
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   
   runApp(
     const ProviderScope(
@@ -25,6 +27,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = ref.watch(appThemeProvider);
+    FlutterNativeSplash.remove();
     
     return MaterialApp(
       title: 'ZCMC Portal',
