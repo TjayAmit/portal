@@ -27,11 +27,11 @@ class _LayoutPageState extends State<LayoutPage> {
         // title: Text("ZCMC PORTAL", style: GoogleFonts.pacifico(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(200, 0, 0, 0))),
         actions: [
           IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/personal-information'), 
+            onPressed: () => Navigator.pushNamed(context, '/notification'), 
             icon: Icon(Icons.notifications),
           ),
           IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/personal-information'), 
+            onPressed: () => Navigator.pushNamed(context, '/freewall'), 
             icon: Icon(Icons.chat),
           ),
         ],

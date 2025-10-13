@@ -6,6 +6,9 @@ class FreeWallPage extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
+            appBar: AppBar(
+                title: const Text('FreeWall'),
+            ),
             body: Center(
                 child: Text('FreeWall'),
             ),
