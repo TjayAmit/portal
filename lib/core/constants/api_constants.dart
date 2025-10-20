@@ -6,6 +6,7 @@ class ApiConstants {
   static const String dtrEndpoint = '/v2/daily-time-records';
   static const String scheduleEndpoint = '/v2/schedules';
   static const String notificationEndpoint = '/notifications';
+  static const String dtrEndPoint  = '/v2/daily-time-records';
   
   // GeoFence API
   static const String geoFenceUrl = 'https://geofenceapi.zcmc.online/api';

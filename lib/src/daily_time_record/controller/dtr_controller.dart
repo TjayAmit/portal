@@ -16,7 +16,20 @@ class DTRController {
       ref.read(dtrStateProvider.notifier).state = DTRState.success(dtr);
       ref.read(dtrListProvider.notifier).state = dtr;
     } catch (e) {
-      print('Failed to fetch DTR: ${e.toString()}');
+      ref.read(dtrStateProvider.notifier).state = DTRState.error(e.toString());
+    }
+  }
+
+  Future<void> postDTR() async {
+    ref.read(dtrStateProvider.notifier).state = DTRState.loading();
+    try {
+      final dtr = await ref.read(dtrServiceProvider).postDTR(ref.read(userProvider)!.token!);
+
+      if(dtr != null){
+        ref.read(dtrListProvider.notifier).update((state) => [...state, dtr]);
+        ref.read(dtrListProvider.notifier).state = [dtr];
+      }
+    } catch (e) {
       ref.read(dtrStateProvider.notifier).state = DTRState.error(e.toString());
     }
   }

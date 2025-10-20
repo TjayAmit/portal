@@ -1,9 +1,12 @@
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zcmc_portal/src/attendance/provider/attendance_provider.dart';
 import 'attendance_state.dart';
 
 class AttendanceController extends StateNotifier<AttendanceState> {
-  AttendanceController()
+  final Ref ref;
+
+  AttendanceController(this.ref)
       : super(AttendanceState(
           canAuth: false,
           canAuthWithBio: false,
@@ -71,11 +74,12 @@ class AttendanceController extends StateNotifier<AttendanceState> {
         state = state.copyWith(
           isAuthenticated: true,
           message: availableTypes.contains(BiometricType.face)
-              ? "✅ Attendance registered using Face ID!"
-              : "✅ Attendance registered using Fingerprint!",
+              ? "✅ Face authenticated!"
+              : "✅ Fingerprint authenticated!",
         );
 
-        // ⏳ After 3 seconds, reset back to default state
+        // await ref.read(dtrControllerProvider).postDTR();
+
         Future.delayed(const Duration(seconds: 3), () {
           state = state.copyWith(
             isAuthenticated: false,
