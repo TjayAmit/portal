@@ -6,6 +6,7 @@ class UserModel{
   final int id;
   final String employeeId;
   final String name;
+  final String authorizationPin;
   final PersonalInformationModel personalInformation;
   final ContactModel contact; 
   final DesignationModel designation;
@@ -15,6 +16,7 @@ class UserModel{
     required this.id, 
     required this.employeeId, 
     required this.name, 
+    required this.authorizationPin,
     required this.personalInformation,
     required this.contact,
     required this.designation,  
@@ -25,6 +27,7 @@ class UserModel{
       id: json['id'],
       employeeId: json['employee_id'],  
       name: json['name'],
+      authorizationPin: json['authorization_pin'],
       personalInformation: PersonalInformationModel.fromJson(json['personal_information']),
       contact: ContactModel.fromJson(json['contact']),
       designation: DesignationModel.fromJson(json['designation']),
@@ -36,6 +39,7 @@ class UserModel{
       'id': id,
       'employee_id': employeeId,
       'name': name,
+      'authorization_pin': authorizationPin,
       'personal_information': personalInformation.toJson(),
       'contact': contact.toJson(),
       'designation': designation.toJson(),

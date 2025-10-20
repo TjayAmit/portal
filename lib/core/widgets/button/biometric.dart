@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zcmc_portal/src/attendance/provider/attendance_provider.dart';
+import 'package:zcmc_portal/src/geofence/controller/geofence_state.dart';
+import 'package:zcmc_portal/src/geofence/provider/geofence_provider.dart';
 
 class Biometric extends ConsumerStatefulWidget {
   const Biometric({super.key});
@@ -20,18 +22,17 @@ class _BiometricState extends ConsumerState<Biometric>
   @override
   void initState() {
     super.initState();
+
     _animController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
     );
 
-    // Icon crossfade: happens throughout
     _iconAnimation = CurvedAnimation(
       parent: _animController,
       curve: Curves.easeInOut,
     );
 
-    // Text fade out: happens first (0.0 to 0.3)
     _textFadeOut = Tween<double>(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: _animController,
@@ -39,13 +40,11 @@ class _BiometricState extends ConsumerState<Biometric>
       ),
     );
 
-    // Width shrink: happens in middle (0.2 to 0.8)
     _widthAnimation = CurvedAnimation(
       parent: _animController,
       curve: const Interval(0.2, 0.8, curve: Curves.easeInOut),
     );
 
-    // Text fade in: happens last (0.7 to 1.0)
     _textFadeIn = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animController,
@@ -64,13 +63,13 @@ class _BiometricState extends ConsumerState<Biometric>
   Widget build(BuildContext context) {
     final attendance = ref.watch(attendanceControllerProvider);
     final controller = ref.read(attendanceControllerProvider.notifier);
+    final geofenceState = ref.watch(geofenceControllerProvider);
 
-    final isSuccess = attendance.isAuthenticated;
-
-    // Trigger animation when state changes
-    if (isSuccess && _animController.status != AnimationStatus.completed) {
+    // Trigger animation when attendance success changes
+    if (attendance.isAuthenticated &&
+        _animController.status != AnimationStatus.completed) {
       _animController.forward();
-    } else if (!isSuccess &&
+    } else if (!attendance.isAuthenticated &&
         _animController.status != AnimationStatus.dismissed) {
       _animController.reverse();
     }
@@ -88,27 +87,35 @@ class _BiometricState extends ConsumerState<Biometric>
       const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
     );
 
+    // Determine button color based on geofence state
+    Color buttonColor;
+    if (geofenceState is GeofenceStateSuccess) {
+      buttonColor =
+          geofenceState.geofenceModel.inside ? Colors.green : Colors.grey.shade400;
+    } else if (geofenceState is GeofenceStateLoading) {
+      buttonColor = Colors.grey.shade300;
+    } else if (geofenceState is GeofenceStateError) {
+      buttonColor = Colors.grey.shade300;
+    } else {
+      buttonColor = Colors.grey.shade300;
+    }
+
     return AnimatedBuilder(
       animation: _animController,
       builder: (context, child) {
-        // Interpolate width smoothly
         final currentWidth = biometricWidth +
             (savedWidth - biometricWidth) * _widthAnimation.value +
             22 + // icon width
-            8 + // space between icon and text
-            30; // left + right padding average
+            8 + // spacing
+            30; // padding
 
-        // Smoothly animate right padding to prevent overflow
         final rightPadding = 15 * (1 - _widthAnimation.value);
 
-        return Container(
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           width: currentWidth,
           decoration: BoxDecoration(
-            color: Color.lerp(
-              Colors.green,
-              Colors.green.shade700,
-              _iconAnimation.value,
-            ),
+            color: buttonColor,
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
@@ -122,7 +129,11 @@ class _BiometricState extends ConsumerState<Biometric>
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(25),
-              onTap: isSuccess
+              onTap: (attendance.isAuthenticated ||
+                      geofenceState is GeofenceStateLoading ||
+                      geofenceState is GeofenceStateError ||
+                      (geofenceState is GeofenceStateSuccess &&
+                          !geofenceState.geofenceModel.inside))
                   ? null
                   : () async {
                       await controller.authenticateAndRegisterAttendance();
@@ -172,29 +183,25 @@ class _BiometricState extends ConsumerState<Biometric>
                     ),
                     const SizedBox(width: 5),
 
-                    // Text crossfade with sequential timing
+                    // Text crossfade
                     Stack(
                       children: [
-                        // "Biometric" text (fades out first)
                         Opacity(
                           opacity: _textFadeOut.value,
                           child: Text(
                             biometricText,
                             style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
-                        // "Saved!" text (fades in last)
                         Opacity(
                           opacity: _textFadeIn.value,
                           child: Text(
                             savedText,
                             style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ],

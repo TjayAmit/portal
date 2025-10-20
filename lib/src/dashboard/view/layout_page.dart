@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:zcmc_portal/core/widgets/avatar/profile_avatar.dart';
 import 'package:zcmc_portal/src/daily_time_record/view/dtr_list.dart';
 import 'package:zcmc_portal/src/dashboard/view/dashboard_page.dart';
@@ -18,7 +17,6 @@ class _LayoutPageState extends State<LayoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

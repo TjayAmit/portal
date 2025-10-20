@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:zcmc_portal/core/constants/api_constants.dart';
+import 'package:zcmc_portal/core/utils/device_authorization_pin_utils.dart';
 import 'package:zcmc_portal/src/authentication/model/user_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ class AuthService{
 
   AuthService({http.Client? client}) : client = client ?? http.Client();
 
-  Future<UserModel?> login(String employeeId, String password) async {
+  Future<UserModel?> login(String employeeId, String password, String deviceId) async {
     try{
       final response = await client.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.loginEndpoint),
@@ -26,6 +27,8 @@ class AuthService{
           final userData = responseData['data'];
           final user = UserModel.fromJson(userData);
           user.setToken(responseData['token']);
+
+          DeviceAuthorizationPinUtils.setAuthorizationPin(user.authorizationPin);
 
           return user;
         }
