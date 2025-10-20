@@ -56,6 +56,35 @@ class AuthService{
     return null;
   }
 
+  Future<UserModel?> retrieveUser() async {
+    final users  = await UserDatabase.instance.getAllUsers();
+    
+    if (users.isNotEmpty) {
+      final user = users.first;
+
+      
+    final response = await client
+      .get(
+        Uri.parse(
+          '${ApiConstants.baseUrl}${ApiConstants.refreshSessionEndpoint}?employee_id=${user.employeeId}',
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      )
+      .timeout(const Duration(seconds: 30));
+
+      final responseData = json.decode(response.body);
+
+      user.setToken(responseData['token']);
+
+      return user;
+    } else {
+      return null;
+    }
+  }
+
   Future<void> logout(String token) async{
     try{
       final response = await client.post(

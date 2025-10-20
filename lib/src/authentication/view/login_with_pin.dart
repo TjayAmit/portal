@@ -198,7 +198,6 @@ class _LoginWithPinState extends ConsumerState<LoginWithPin> {
         final authController = ref.read(authControllerProvider);
         await authController.retrieveUser();
         
-        Navigator.pushReplacementNamed(context, '/dashboard');
       } else {
         setState(() => _isError = true);
       }

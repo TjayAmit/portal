@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zcmc_portal/core/database/user_db.dart';
 import 'package:zcmc_portal/core/utils/device_authorization_pin_utils.dart';
 import 'package:zcmc_portal/src/authentication/controller/auth_state.dart';
-import 'package:zcmc_portal/src/authentication/model/user_model.dart';
 import 'package:zcmc_portal/src/authentication/providers/auth_providers.dart';
 import 'package:zcmc_portal/src/geofence/provider/geofence_provider.dart';
 import 'package:zcmc_portal/core/utils/device_utils.dart';
@@ -20,7 +19,7 @@ class AuthController{
       final user = await ref.read(authServiceProvider).login(username, password, deviceId);
 
 
-      if(user == null){
+      if (user == null) {
         ref.read(authStateProvider.notifier).state = AuthState.unauthenticated();
         return;
       }
@@ -46,13 +45,12 @@ class AuthController{
   }
 
   Future<void> retrieveUser() async {
-    final users  = await UserDatabase.instance.getAllUsers();
+    final user = await ref.read(authServiceProvider).retrieveUser();
     
-    if (users.isNotEmpty) {
-      final user = users.first;
-
+    if (user != null) {
       ref.read(authStateProvider.notifier).state = AuthState.authenticated(user);
       ref.read(userProvider.notifier).state = user;
+      await ref.read(geofenceControllerProvider.notifier).startMonitoring(ref);
     } else {
       ref.read(authStateProvider.notifier).state = AuthState.unauthenticated();
     }
