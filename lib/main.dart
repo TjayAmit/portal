@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zcmc_portal/core/database/user_db.dart';
 import 'package:zcmc_portal/core/theme/app_theme.dart';
 import 'package:zcmc_portal/core/utils/device_authorization_pin_utils.dart';
 import 'package:zcmc_portal/src/authentication/view/login_with_pin.dart';
@@ -17,6 +18,8 @@ import 'package:zcmc_portal/src/schedule/view/schedule.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();  
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  
+  await UserDatabase.instance.database;
   
   String authorizationPin =
       await DeviceAuthorizationPinUtils.getAuthorizationPin();

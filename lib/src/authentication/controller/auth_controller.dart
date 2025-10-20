@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zcmc_portal/core/database/user_db.dart';
 import 'package:zcmc_portal/core/utils/device_authorization_pin_utils.dart';
 import 'package:zcmc_portal/src/authentication/controller/auth_state.dart';
+import 'package:zcmc_portal/src/authentication/model/user_model.dart';
 import 'package:zcmc_portal/src/authentication/providers/auth_providers.dart';
 import 'package:zcmc_portal/src/geofence/provider/geofence_provider.dart';
 import 'package:zcmc_portal/core/utils/device_utils.dart';
@@ -43,9 +45,20 @@ class AuthController{
     }
   }
 
+  Future<void> retrieveUser() async {
+    final users  = await UserDatabase.instance.getAllUsers();
+    
+    if (users.isNotEmpty) {
+      final user = UserModel.fromMap(users.first.toJson());
+      ref.read(authStateProvider.notifier).state = AuthState.authenticated(user);
+    } else {
+      ref.read(authStateProvider.notifier).state = AuthState.unauthenticated();
+    }
+  }
+
   Future<bool> verifyAuthorizationPin(  String pin) async {
     final storedPin = await DeviceAuthorizationPinUtils.getAuthorizationPin();
-    
+
     return pin == storedPin;
   }
 }

@@ -23,4 +23,11 @@ class DesignationModel {
       'area': area.toJson(),
     };
   }
+
+  factory DesignationModel.fromMap(Map<String, dynamic> map) {
+    return DesignationModel(
+      jobPosition: JobPositionModel.fromMap(map['position']),
+      area: AreaAssignedModel.fromMap(map['area']),
+    );
+  }
 } 

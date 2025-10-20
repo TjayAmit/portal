@@ -20,4 +20,11 @@ class ContactModel {
       'phone_number': phoneNumber,
     };
   }
+
+  factory ContactModel.fromMap(Map<String, dynamic> map) {
+    return ContactModel(
+      email: map['email_address'],
+      phoneNumber: map['phone_number'],
+    );
+  }
 }

@@ -20,4 +20,11 @@ class AreaAssignedModel {
       'code': code,
     };
   }
+
+  factory AreaAssignedModel.fromMap(Map<String, dynamic> map) {
+    return AreaAssignedModel(
+      name: map['name'],
+      code: map['code'],
+    );
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:zcmc_portal/src/authentication/model/contact_model.dart';
 import 'package:zcmc_portal/src/authentication/model/designation_model.dart';
 import 'package:zcmc_portal/src/authentication/model/personal_information_model.dart';
@@ -48,4 +50,27 @@ class UserModel{
   }
 
   setToken(String token) => this.token = token;
+  
+  // Convert Map to UserModel
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'],
+      employeeId: map['employee_id'],
+      name: map['name'],
+      authorizationPin: map['authorization_pin'],
+      personalInformation: PersonalInformationModel.fromMap(
+        map['personal_information'] is String
+            ? jsonDecode(map['personal_information'])
+            : map['personal_information'],
+      ),
+      contact: ContactModel.fromMap(
+        map['contact'] is String ? jsonDecode(map['contact']) : map['contact'],
+      ),
+      designation: DesignationModel.fromMap(
+        map['designation'] is String
+            ? jsonDecode(map['designation'])
+            : map['designation'],
+      ),
+    );
+  }
 }

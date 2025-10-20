@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:zcmc_portal/core/constants/api_constants.dart';
+import 'package:zcmc_portal/core/database/user_db.dart';
 import 'package:zcmc_portal/core/utils/device_authorization_pin_utils.dart';
 import 'package:zcmc_portal/src/authentication/model/user_model.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +18,7 @@ class AuthService{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: json.encode({'employee_id': employeeId, 'password': password}),
+        body: json.encode({'employee_id': employeeId, 'password': password, 'device_uuid': deviceId}),
       ).timeout(const Duration(seconds: 30));
 
       if(response.statusCode == 200){
@@ -27,6 +28,8 @@ class AuthService{
           final userData = responseData['data'];
           final user = UserModel.fromJson(userData);
           user.setToken(responseData['token']);
+
+          await UserDatabase.instance.insertUser(user);
 
           if (await DeviceAuthorizationPinUtils.getAuthorizationPin() == ''){
             await DeviceAuthorizationPinUtils.setAuthorizationPin(user.authorizationPin);

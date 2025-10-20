@@ -65,5 +65,23 @@ class PersonalInformationModel {
     };
   }
 
+  factory PersonalInformationModel.fromMap(Map<String, dynamic> map) {
+    return PersonalInformationModel(
+      firstName: map['first_name'],
+      middleName: map['middle_name'],
+      lastName: map['last_name'],
+      suffix: map['name_extension'],
+      sex: map['sex'],
+      birthDate: DateTime.parse(map['date_of_birth']),
+      placeOfBirth: map['place_of_birth'],
+      civilStatus: map['civil_status'],
+      bloodType: map['blood_type'],
+      height: map['height'],
+      weight: map['weight'],
+      religion: map['religion'],
+      citizenship: map['citizenship'],
+    );
+  }
+
   String get name => '$lastName, $firstName $middleName';
 }

@@ -32,4 +32,14 @@ class JobPositionModel {
       'salary_amount': salaryAmount,
     };
   }
+
+  factory JobPositionModel.fromMap(Map<String, dynamic> map) {
+    return JobPositionModel(
+      name: map['name'],
+      code: map['code'],
+      salaryGrade: map['salary_grade'],
+      step: map['step'],
+      salaryAmount: map['salary_amount'],
+    );
+  }
 }
