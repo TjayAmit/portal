@@ -51,26 +51,22 @@ class UserModel{
 
   setToken(String token) => this.token = token;
   
-  // Convert Map to UserModel
   factory UserModel.fromMap(Map<String, dynamic> map) {
+    
+    final personalInfo = jsonDecode(map['personal_information']);
+    final contactInfo = jsonDecode(map['contact']);
+    final designationInfo = jsonDecode(map['designation']);
+
     return UserModel(
       id: map['id'],
       employeeId: map['employee_id'],
       name: map['name'],
       authorizationPin: map['authorization_pin'],
-      personalInformation: PersonalInformationModel.fromMap(
-        map['personal_information'] is String
-            ? jsonDecode(map['personal_information'])
-            : map['personal_information'],
-      ),
+      personalInformation: PersonalInformationModel.fromMap(personalInfo),
       contact: ContactModel.fromMap(
-        map['contact'] is String ? jsonDecode(map['contact']) : map['contact'],
+        contactInfo,
       ),
-      designation: DesignationModel.fromMap(
-        map['designation'] is String
-            ? jsonDecode(map['designation'])
-            : map['designation'],
-      ),
+      designation: DesignationModel.fromMap(designationInfo),
     );
   }
 }

@@ -49,8 +49,10 @@ class AuthController{
     final users  = await UserDatabase.instance.getAllUsers();
     
     if (users.isNotEmpty) {
-      final user = UserModel.fromMap(users.first.toJson());
+      final user = users.first;
+
       ref.read(authStateProvider.notifier).state = AuthState.authenticated(user);
+      ref.read(userProvider.notifier).state = user;
     } else {
       ref.read(authStateProvider.notifier).state = AuthState.unauthenticated();
     }
