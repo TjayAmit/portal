@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zcmc_portal/core/utils/device_authorization_pin_utils.dart';
 import 'package:zcmc_portal/src/authentication/controller/auth_state.dart';
 import 'package:zcmc_portal/src/authentication/providers/auth_providers.dart';
 import 'package:zcmc_portal/src/geofence/provider/geofence_provider.dart';
@@ -40,5 +41,11 @@ class AuthController{
     } catch (e) {
       ref.read(authStateProvider.notifier).state = AuthState.error(e.toString());
     }
+  }
+
+  Future<bool> verifyAuthorizationPin(  String pin) async {
+    final storedPin = await DeviceAuthorizationPinUtils.getAuthorizationPin();
+    
+    return pin == storedPin;
   }
 }

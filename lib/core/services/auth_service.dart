@@ -28,7 +28,9 @@ class AuthService{
           final user = UserModel.fromJson(userData);
           user.setToken(responseData['token']);
 
-          DeviceAuthorizationPinUtils.setAuthorizationPin(user.authorizationPin);
+          if (await DeviceAuthorizationPinUtils.getAuthorizationPin() == ''){
+            await DeviceAuthorizationPinUtils.setAuthorizationPin(user.authorizationPin);
+          }
 
           return user;
         }
