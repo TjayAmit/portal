@@ -83,7 +83,7 @@ class TodayLogController extends StateNotifier<BiometricState> {
               : "✅ Fingerprint authenticated!",
         );
 
-        await postTodayLog(); // call your attendance post logic
+        await postTodayLog();
 
         // Reset after 3 seconds
         Future.delayed(const Duration(seconds: 3), () {
@@ -123,6 +123,7 @@ class TodayLogController extends StateNotifier<BiometricState> {
 
   Future<void> postTodayLog() async {
     ref.read(todayLogStateProvider.notifier).state = TodayLogState.loading();
+    
     try {
       final token = ref.read(userProvider)!.token!;
       final dtr = await ref.read(todayLogServiceProvider).postTodayLog(token);
