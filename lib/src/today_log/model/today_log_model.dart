@@ -9,18 +9,17 @@ class TodayLogModel {
   TodayLogModel({
     this.id = 0,
     String? date,
-    String? timeIn,
+    this.timeIn = '',
     this.breakOut = '',
     this.breakIn = '',
     this.timeOut = '',
-  })  : date = date ?? DateTime.now().toIso8601String().split('T').first,
-        timeIn = timeIn ?? _defaultMorningTime(); 
+  }) : date = date ?? DateTime.now().toIso8601String().split('T').first;
 
   factory TodayLogModel.fromJson(Map<String, dynamic> json) {
     return TodayLogModel(
       id: json['id'] ?? 0,
       date: json['date'],
-      timeIn: json['time_in'],
+      timeIn: json['time_in'] ?? '',
       breakOut: json['break_out'] ?? '',
       breakIn: json['break_in'] ?? '',
       timeOut: json['time_out'] ?? '',
@@ -35,10 +34,4 @@ class TodayLogModel {
         'break_in': breakIn,
         'time_out': timeOut,
       };
-
-  static String _defaultMorningTime() {
-    final now = DateTime.now();
-    final morning = DateTime(now.year, now.month, now.day, 7, 30);
-    return morning.toIso8601String();
-  }
 }

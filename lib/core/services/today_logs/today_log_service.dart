@@ -27,8 +27,8 @@ class TodayLogService{
       final responseData = json.decode(response.body);
       
       if(responseData['data'] != null){
-        final dtrData = responseData['data'];
-        return TodayLogModel.fromJson(dtrData); 
+        final log = responseData['data'];
+        return TodayLogModel.fromJson(log); 
       }
     }catch(e){
       throw Exception('Today Log failed: ${e.toString()}');

@@ -18,7 +18,13 @@ class TodayLogController extends StateNotifier<BiometricState> {
           isAuthenticated: false,
           message: "Initializing biometric check...",
         )) {
-    _initializeBiometric();
+    _initialize();
+  }
+
+  // --- INITIALIZE BOTH BIOMETRICS & TODAY LOG ---
+  Future<void> _initialize() async {
+    await _initializeBiometric();
+    await getTodayLog();
   }
 
   // --- BIOMETRIC INITIALIZATION ---
@@ -61,7 +67,22 @@ class TodayLogController extends StateNotifier<BiometricState> {
     }
   }
 
-  // --- BIOMETRIC AUTHENTICATION + ATTENDANCE ---
+  // --- FETCH TODAY LOG ON LOAD ---
+  Future<void> getTodayLog() async {
+    ref.read(todayLogStateProvider.notifier).state = TodayLogState.loading();
+    try {
+      final token = ref.read(userProvider)!.token!;
+      final dtr = await ref.read(todayLogServiceProvider).getTodayLog(token);
+      ref.read(todayLogStateProvider.notifier).state =
+          TodayLogState.success(dtr ?? TodayLogModel());
+      ref.read(todayLogProvider.notifier).state = dtr;
+    } catch (e) {
+      ref.read(todayLogStateProvider.notifier).state =
+          TodayLogState.error(e.toString());
+    }
+  }
+
+  // --- BIOMETRIC AUTH + POST LOG ---
   Future<void> authenticateAndRegisterAttendance() async {
     try {
       final isAuthenticated = await auth.authenticate(
@@ -106,33 +127,18 @@ class TodayLogController extends StateNotifier<BiometricState> {
     }
   }
 
-  // --- GET TODAY LOG ---
-  Future<void> getTodayLog() async {
-    ref.read(todayLogStateProvider.notifier).state = TodayLogState.loading();
-    try {
-      final token = ref.read(userProvider)!.token!;
-      final dtr = await ref.read(todayLogServiceProvider).getTodayLog(token);
-      ref.read(todayLogStateProvider.notifier).state =
-          TodayLogState.success(dtr ?? TodayLogModel());
-      ref.read(todayLogProvider.notifier).state = dtr;
-    } catch (e) {
-      ref.read(todayLogStateProvider.notifier).state =
-          TodayLogState.error(e.toString());
-    }
-  }
-
+  // --- POST TODAY LOG AFTER SUCCESSFUL AUTH ---
   Future<void> postTodayLog() async {
     ref.read(todayLogStateProvider.notifier).state = TodayLogState.loading();
-    
+
     try {
       final token = ref.read(userProvider)!.token!;
       final dtr = await ref.read(todayLogServiceProvider).postTodayLog(token);
 
       if (dtr != null) {
         ref.read(todayLogProvider.notifier).state = dtr;
-        ref
-            .read(todayLogStateProvider.notifier)
-            .state = TodayLogState.success(dtr);
+        ref.read(todayLogStateProvider.notifier).state =
+            TodayLogState.success(dtr);
       }
     } catch (e) {
       ref.read(todayLogStateProvider.notifier).state =
