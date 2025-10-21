@@ -36,35 +36,4 @@ class DTRService{
 
     return [];
   }
-
-  Future<DTRModel?> postDTR(String token) async {
-    try{
-      final response = await client.post(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.dtrEndPoint),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'time_log': DateTime.now().toIso8601String(),
-        }),
-      ).timeout(const Duration(seconds: 30));
-
-      if(response.statusCode != 200){
-        throw Exception('DTR failed: ${response.statusCode}');
-      }
-
-      final responseData = json.decode(response.body);
-      
-      if(responseData['data'] != null){
-        final dtrData = responseData['data'];
-        return DTRModel.fromJson(dtrData);
-      }
-    }catch(e){
-      throw Exception('DTR failed: ${e.toString()}');
-    }
-
-    return null;
-  }
 }

@@ -1,25 +1,28 @@
-import 'package:local_auth/local_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:zcmc_portal/src/authentication/providers/auth_providers.dart';
+import 'package:zcmc_portal/src/today_log/controller/biometric_state.dart';
+import 'package:zcmc_portal/src/today_log/controller/today_log_state.dart';
+import 'package:zcmc_portal/src/today_log/model/today_log_model.dart';
 import 'package:zcmc_portal/src/today_log/provider/today_log_provider.dart';
-import 'attendance_state.dart';
 
-class AttendanceController extends StateNotifier<AttendanceState> {
+class TodayLogController extends StateNotifier<BiometricState> {
   final Ref ref;
+  final LocalAuthentication auth = LocalAuthentication();
+  List<BiometricType> availableTypes = [];
 
-  AttendanceController(this.ref)
-      : super(AttendanceState(
+  TodayLogController(this.ref)
+      : super(BiometricState(
           canAuth: false,
           canAuthWithBio: false,
           isAuthenticated: false,
           message: "Initializing biometric check...",
         )) {
-    _initialize();
+    _initializeBiometric();
   }
 
-  final LocalAuthentication auth = LocalAuthentication();
-  List<BiometricType> availableTypes = [];
-
-  Future<void> _initialize() async {
+  // --- BIOMETRIC INITIALIZATION ---
+  Future<void> _initializeBiometric() async {
     try {
       final canBio = await auth.canCheckBiometrics;
       final canAuthDevice = await auth.isDeviceSupported();
@@ -29,6 +32,7 @@ class AttendanceController extends StateNotifier<AttendanceState> {
           canAuthWithBio: false,
           message: "Biometric not available or not enrolled.",
         );
+        return;
       }
 
       availableTypes = await auth.getAvailableBiometrics();
@@ -57,6 +61,7 @@ class AttendanceController extends StateNotifier<AttendanceState> {
     }
   }
 
+  // --- BIOMETRIC AUTHENTICATION + ATTENDANCE ---
   Future<void> authenticateAndRegisterAttendance() async {
     try {
       final isAuthenticated = await auth.authenticate(
@@ -78,8 +83,9 @@ class AttendanceController extends StateNotifier<AttendanceState> {
               : "✅ Fingerprint authenticated!",
         );
 
-        await ref.read(todayLogControllerProvider.notifier).postTodayLog();
+        await postTodayLog(); // call your attendance post logic
 
+        // Reset after 3 seconds
         Future.delayed(const Duration(seconds: 3), () {
           state = state.copyWith(
             isAuthenticated: false,
@@ -97,6 +103,39 @@ class AttendanceController extends StateNotifier<AttendanceState> {
         isAuthenticated: false,
         message: "Error during authentication: $e",
       );
+    }
+  }
+
+  // --- GET TODAY LOG ---
+  Future<void> getTodayLog() async {
+    ref.read(todayLogStateProvider.notifier).state = TodayLogState.loading();
+    try {
+      final token = ref.read(userProvider)!.token!;
+      final dtr = await ref.read(todayLogServiceProvider).getTodayLog(token);
+      ref.read(todayLogStateProvider.notifier).state =
+          TodayLogState.success(dtr ?? TodayLogModel());
+      ref.read(todayLogProvider.notifier).state = dtr;
+    } catch (e) {
+      ref.read(todayLogStateProvider.notifier).state =
+          TodayLogState.error(e.toString());
+    }
+  }
+
+  Future<void> postTodayLog() async {
+    ref.read(todayLogStateProvider.notifier).state = TodayLogState.loading();
+    try {
+      final token = ref.read(userProvider)!.token!;
+      final dtr = await ref.read(todayLogServiceProvider).postTodayLog(token);
+
+      if (dtr != null) {
+        ref.read(todayLogProvider.notifier).state = dtr;
+        ref
+            .read(todayLogStateProvider.notifier)
+            .state = TodayLogState.success(dtr);
+      }
+    } catch (e) {
+      ref.read(todayLogStateProvider.notifier).state =
+          TodayLogState.error(e.toString());
     }
   }
 }
