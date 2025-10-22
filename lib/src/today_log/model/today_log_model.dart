@@ -27,11 +27,11 @@ class TodayLogModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'date': date,
-        'time_in': timeIn,
-        'break_out': breakOut,
-        'break_in': breakIn,
-        'time_out': timeOut,
-      };
+    'id': id,
+    'date': date,
+    'time_in': timeIn,
+    'break_out': breakOut,
+    'break_in': breakIn,
+    'time_out': timeOut,
+  };
 }

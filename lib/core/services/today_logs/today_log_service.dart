@@ -34,7 +34,7 @@ class TodayLogService{
       throw Exception('Today Log failed: ${e.toString()}');
     }
 
-    return null;
+    return TodayLogModel();
   }
 
   Future<TodayLogModel?> postTodayLog(String token) async {
