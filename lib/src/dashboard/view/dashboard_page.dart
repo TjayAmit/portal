@@ -32,9 +32,7 @@ class DashboardPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                child: 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -65,29 +63,23 @@ class DashboardPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: 50,
-                      height: 100,
-                      child: Image.asset('assets/logo/zcmc.png', fit: BoxFit.contain),
-                    )
-                  ],
-                ),
               ),
 
               const SizedBox(height: 20),
 
-              Row(children: [
-                Text(
-                  'Your Dashboard',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
-                  ),
-                ),  
-              ],
-              )
-      
+              Row(
+                children: [
+                  Text(
+                    'Dashboard',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),  
+                ],
+              ),
+              const SizedBox(height: 20),
             // const SizedBox(height: 20),
             // const LeaveCreditsCard(),
             // const SizedBox(height: 20),
