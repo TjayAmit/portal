@@ -77,7 +77,11 @@ class AuthService{
 
       final responseData = json.decode(response.body);
 
-      user.setToken(responseData['token']);
+      try {
+        user.setToken(responseData['token']);
+      }catch(e){
+        print(e.toString());
+      }
 
       return user;
     } else {

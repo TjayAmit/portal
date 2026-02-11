@@ -51,7 +51,6 @@ class _LoginWithPinState extends ConsumerState<LoginWithPin> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo & Title
             Column(
               children: [
                 Image.network(
